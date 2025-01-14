@@ -131,3 +131,6 @@ dist
 
 .env*
 !.env.example
+
+pchan-bot-ssh-key
+pchan-bot-ssh-key.pub

@@ -21,37 +21,48 @@
 
 1. Установите [Docker](https://docs.docker.com/get-docker/) и [Docker Compose](https://docs.docker.com/compose/install/)
 
-2. Запустите бота:
+2. Запустите бота одним из способов:
 
-   Dev режим (по умолчанию):
+### Способ 1: Автоматическое развертывание (рекомендуется)
 
-   ```bash
-   docker compose up -d
-   ```
+Используйте скрипт `deploy.sh` для автоматического развертывания:
 
-   Prod режим:
+```bash
+# Prod режим (по умолчанию)
+./deploy.sh
 
-   ```bash
-   ENV_FILE=.env.prod docker-compose up -d
-   ```
+# Prod режим
+./deploy.sh .env.prod
 
-   С переопределением TARGET_CHAT_ID:
+# С указанием другого env файла
+./deploy.sh .env.dev
+```
 
-   ```bash
-   docker compose up -d
-   ```
+Скрипт автоматически:
 
-   Для просмотра логов:
+- Получает последние изменения из git
+- Проверяет наличие env файла
+- Останавливает текущий контейнер
+- Собирает и запускает новый контейнер
+- Проверяет успешность запуска
 
-   ```bash
-   docker compose logs -f
-   ```
+### Способ 2: Ручное управление
 
-   Для остановки:
+Если вам нужен более тонкий контроль:
 
-   ```bash
-   docker-compose down
-   ```
+```bash
+# Dev режим (по умолчанию)
+docker compose up -d
+
+# Prod режим
+ENV_FILE=.env.prod docker compose up -d
+
+# Просмотр логов
+docker compose logs -f
+
+# Остановка бота
+docker compose down
+```
 
 ## Запуск без Docker
 
