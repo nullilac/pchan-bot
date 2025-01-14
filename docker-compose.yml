@@ -1,0 +1,7 @@
+services:
+  bot:
+    build: .
+    container_name: pchan-bot
+    env_file:
+      - ${ENV_FILE:-.env.dev}
+    restart: unless-stopped
