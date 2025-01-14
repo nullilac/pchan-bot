@@ -1,0 +1,41 @@
+name: Deploy Bot
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh/
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          echo "${{ secrets.SSH_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+
+      - name: Deploy to host
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+        run: |
+          # Подключаемся к хосту и выполняем команды
+          ssh -i ~/.ssh/deploy_key $SSH_USER@$SSH_HOST << 'ENDSSH'
+            # Переходим в директорию проекта
+            cd ~/pchan-bot
+            
+            # Делаем deploy.sh исполняемым
+            chmod +x deploy.sh
+
+            # Создаем .env.prod из секретов
+            cat > .env.prod << 'ENDENV'
+          BOT_TOKEN=${{ secrets.BOT_TOKEN }}
+          TARGET_CHAT_ID=${{ secrets.TARGET_CHAT_ID }}
+          ENV=prod
+          ENDENV
+
+            # Запускаем деплой
+            ./deploy.sh
+          ENDSSH

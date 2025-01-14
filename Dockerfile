@@ -3,7 +3,8 @@ FROM node:18-alpine
 WORKDIR /app
 
 # Устанавливаем зависимости
-COPY package*.json ./
+COPY package.json ./
+RUN npm config set strict-ssl false
 RUN npm install
 
 # Для продакшена используем build и start
