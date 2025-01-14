@@ -1,8 +1,10 @@
-node_modules
-dist
-.env
 .git
 .gitignore
-README.md
+.env*
+node_modules
+npm-debug.log
 Dockerfile
-docker-compose.yml
+.dockerignore
+README.md
+.github
+dist

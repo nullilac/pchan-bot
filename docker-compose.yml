@@ -3,5 +3,17 @@ services:
     build: .
     container_name: pchan-bot
     env_file:
-      - ${ENV_FILE:-.env.dev}
+      - ${ENV_FILE:-.env.prod}
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 512M
+        reservations:
+          cpus: "0.25"
+          memory: 256M
+    volumes:
+      - ./src:/app/src
+      - ./package.json:/app/package.json
+      - ./tsconfig.json:/app/tsconfig.json
